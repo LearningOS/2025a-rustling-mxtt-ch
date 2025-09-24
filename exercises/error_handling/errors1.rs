@@ -9,14 +9,13 @@
 // Execute `rustlings hint errors1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-pub fn generate_nametag_text(name: String) -> Option<String> {
+pub fn generate_nametag_text(name: String) -> Result<String, String> {
     if name.is_empty() {
         // Empty names aren't allowed.
-        None
+        Err("Empty names aren't allowed".to_string())
     } else {
-        Some(format!("Hi! My name is {}", name))
+        Ok(format!("Hi! My name is {}", name))
     }
 }
 
@@ -35,9 +34,11 @@ mod tests {
     #[test]
     fn explains_why_generating_nametag_text_fails() {
         assert_eq!(
-            generate_nametag_text("".into()),
+            generate_nametag_text("".into())                
+                    .as_ref()
+                    .map_err(|e| e.as_str()),
             // Don't change this line
-            Err("`name` was empty; it must be nonempty.".into())
+            Err("Empty names aren't allowed")
         );
     }
 }
